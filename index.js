@@ -3,7 +3,7 @@ var Path = require("path");
 var Glob = require("glob");
 var ChildProcess = require("child_process");
 
-export function globDelete(paths, options) {
+module.exports = function (paths, options) {
 
     let rootDir = options && options.root ? Path.resolve(options.root) : process.env.PWD;
 
@@ -28,4 +28,4 @@ export function globDelete(paths, options) {
 
     });
 
-}
+};
