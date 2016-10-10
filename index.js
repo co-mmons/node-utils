@@ -5,7 +5,7 @@ var ChildProcess = require("child_process");
 
 export function globDelete(paths, options) {
 
-    let rootDir = options && options.rootDir ? Path.resolve(options.rootDir) : process.env.PWD;
+    let rootDir = options && options.root ? Path.resolve(options.root) : process.env.PWD;
 
     paths.forEach(function(query) {
 
