@@ -7,7 +7,8 @@
   "bin": {
     "node-utils-file-system-copy-directory": "dist/file-system/copy-directory.js",
     "node-utils-file-system-glob-copy": "dist/file-system/glob-copy.js",
-    "node-utils-npm-link-local-package": "dist/npm/link-local-package.js"
+    "node-utils-npm-link-local-package": "dist/npm/link-local-package.js",
+    "node-utils-npm-install-dist": "dist/npm/install-dist.js"
   },
   "dependencies": {
     "@types/glob": "^5.0.30",
