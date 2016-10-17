@@ -1,7 +1,16 @@
 {
-    "name": "co.mmons.node-glob-delete",
-    "version": "1.0.0",
-    "author": "co.mmons",
-    "private": false,
-    "license": "MIT"
+  "name": "co.mmons.node-utils",
+  "version": "1.0.0",
+  "author": "co.mmons",
+  "private": false,
+  "license": "MIT",
+  "bin": {
+    "node-utils-file-system-copy-recursive": "dist/file-system/copy-recursive.js",
+    "node-utils-npm-link-local-package": "dist/npm/link-local-package.js"
+  },
+  "dependencies": {
+    "@types/glob": "^5.0.30",
+    "@types/node": "^6.0.45",
+    "glob": "^7.1.1"
+  }
 }
