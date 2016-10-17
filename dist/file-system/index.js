@@ -77,6 +77,20 @@ function dirExists(path) {
     return false;
 }
 exports.dirExists = dirExists;
+function createDirs(folderPath, mode) {
+    var folders = [];
+    var tmpPath = Path.normalize(folderPath);
+    var exists = FileSystem.existsSync(tmpPath);
+    while (!exists) {
+        folders.push(tmpPath);
+        tmpPath = Path.join(tmpPath, '..');
+        exists = FileSystem.existsSync(tmpPath);
+    }
+    for (var i = folders.length - 1; i >= 0; i--) {
+        FileSystem.mkdirSync(folders[i], mode);
+    }
+}
+exports.createDirs = createDirs;
 function globDelete(paths, options) {
     var rootDir = options && options.root ? Path.resolve(options.root) : process.env.PWD;
     paths.forEach(function (query) {
@@ -95,4 +109,23 @@ function globDelete(paths, options) {
     });
 }
 exports.globDelete = globDelete;
+;
+function globCopy(source, segments, target) {
+    var sourceDir = Path.resolve(source);
+    var targetDir = Path.resolve(target);
+    segments.forEach(function (query) {
+        if (typeof query === "string") {
+            Glob.sync((query.charAt(0) === "/" ? "" : "/") + query, { root: sourceDir }).forEach(function (segment) {
+                var sourcePath = Path.resolve(sourceDir, segment);
+                var targetPath = Path.resolve(targetDir, segment.replace(sourceDir + "/", ""));
+                var stat = FileSystem.statSync(sourcePath);
+                if (stat.isFile()) {
+                    createDirs(Path.dirname(targetPath));
+                    copyFileSync(sourcePath, targetPath);
+                }
+            });
+        }
+    });
+}
+exports.globCopy = globCopy;
 ;

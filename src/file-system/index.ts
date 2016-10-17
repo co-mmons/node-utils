@@ -86,6 +86,22 @@ export function dirExists (path) {
     return false;
 }
 
+export function createDirs(folderPath: string, mode?: string) {
+    let folders = [];
+    let tmpPath = Path.normalize(folderPath);
+    let exists = FileSystem.existsSync(tmpPath);
+    while (!exists) {
+        folders.push(tmpPath);
+        tmpPath = Path.join(tmpPath, '..');
+        exists = FileSystem.existsSync(tmpPath);
+    }
+
+    for (var i = folders.length - 1; i >= 0; i--) {
+        FileSystem.mkdirSync(folders[i], mode);
+    }
+}
+
+
 export function globDelete (paths, options) {
 
     let rootDir = options && options.root ? Path.resolve(options.root) : process.env.PWD;
@@ -106,6 +122,33 @@ export function globDelete (paths, options) {
                     FileSystem.unlinkSync(path);
                 }
 
+            });
+        }
+
+    });
+
+};
+
+export function globCopy (source: string, segments: string[], target: string) {
+
+    let sourceDir = Path.resolve(source);
+	let targetDir = Path.resolve(target);
+
+    segments.forEach(function(query) {
+
+        if (typeof query === "string") {
+
+            Glob.sync((query.charAt(0) === "/" ? "" : "/") + query, {root: sourceDir}).forEach((segment) => {
+
+                let sourcePath = Path.resolve(sourceDir, segment);
+				let targetPath = Path.resolve(targetDir, segment.replace(sourceDir + "/", ""));
+
+                let stat = FileSystem.statSync(sourcePath);
+
+                if (stat.isFile()) {
+					createDirs(Path.dirname(targetPath));
+					copyFileSync(sourcePath, targetPath);
+                }
             });
         }
 
