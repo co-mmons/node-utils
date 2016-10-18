@@ -10,6 +10,9 @@
     "node-utils-npm-link-local-package": "dist/npm/link-local-package.js",
     "node-utils-npm-install-dist": "dist/npm/install-dist.js"
   },
+  "scripts": {
+      "install": "dist/npm/install-dist.js"
+  },
   "dependencies": {
     "@types/glob": "^5.0.30",
     "@types/node": "^6.0.45",
