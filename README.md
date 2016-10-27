@@ -1,2 +1,2 @@
-# node-glob-delete
-Deletes files using glob
+# Node Utils
+node-utils-npm-link-local-package packageName packageSrc
