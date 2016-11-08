@@ -1,7 +1,7 @@
 "use strict";
 var FileSystem = require("fs");
+var FileSystemExtra = require("fs-extra");
 var Path = require("path");
-var ChildProcess = require("child_process");
 var Glob = require("glob");
 function copyFileSync(source, target) {
     FileSystem.writeFileSync(target, FileSystem.readFileSync(source));
@@ -92,14 +92,14 @@ function createDirs(folderPath, mode) {
 }
 exports.createDirs = createDirs;
 function globDelete(paths, options) {
-    var rootDir = options && options.root ? Path.resolve(options.root) : process.env.PWD;
+    var rootDir = options && options.root ? Path.resolve(options.root) : process.cwd();
     paths.forEach(function (query) {
         if (typeof query === "string") {
             Glob.sync(query, { root: rootDir }).forEach(function (path) {
                 path = Path.resolve(rootDir, path);
                 var stat = FileSystem.statSync(path);
                 if (stat.isDirectory()) {
-                    ChildProcess.execSync("rm -rf " + path);
+                    FileSystemExtra.removeSync(path);
                 }
                 else {
                     FileSystem.unlinkSync(path);

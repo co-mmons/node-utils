@@ -1,4 +1,5 @@
 import * as FileSystem from "fs";
+import * as FileSystemExtra from "fs-extra";
 import * as Path from "path";
 import * as ChildProcess from "child_process";
 import * as Glob from "glob";
@@ -117,7 +118,7 @@ export function globDelete (paths, options) {
                 var stat = FileSystem.statSync(path);
 
                 if (stat.isDirectory()) {
-                	ChildProcess.execSync("rm -rf " + path);
+					FileSystemExtra.removeSync(path);
                 } else {
                     FileSystem.unlinkSync(path);
                 }
