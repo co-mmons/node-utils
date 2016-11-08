@@ -104,7 +104,7 @@ export function createDirs(folderPath: string, mode?: string) {
 
 export function globDelete (paths, options) {
 
-    let rootDir = options && options.root ? Path.resolve(options.root) : process.env.PWD;
+    let rootDir = options && options.root ? Path.resolve(options.root) : process.cwd();
 
     paths.forEach(function(query) {
 
