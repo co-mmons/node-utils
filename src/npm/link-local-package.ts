@@ -6,7 +6,7 @@ import * as ChildProcess from "child_process";
 
 let args = process.argv.slice(2);
 
-let nodeModulesPath = Path.join(process.argv[1], "../../");
+let nodeModulesPath = Path.join(process.cwd(), "node_modules");
 let packageName = args.length > 0 ? args[0] : undefined;
 let packageSrc = args.length > 1 ? Path.resolve(args[1]) : undefined;
 let packageTmpPath = Path.join(nodeModulesPath, ".tmp-" + packageName);
