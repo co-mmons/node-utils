@@ -13,13 +13,13 @@ let packageTmpPath = Path.join(nodeModulesPath, ".tmp-" + packageName);
 let packagePath = Path.join(nodeModulesPath, packageName);
 
 try {
+    ChildProcess.execSync("hln -u " + packagePath);
+} catch (e) {}
+
+try {
     FileSystem.unlinkSync(packageTmpPath);
 } catch (e) {}
 
 ChildProcess.execSync("ln -s " + packageSrc + " " + packageTmpPath);
-
-try {
-    ChildProcess.execSync("hln -u " + packagePath);
-} catch (e) {}
 
 ChildProcess.execSync("hln " + packageTmpPath + " " + packagePath);
