@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var fse = require("fs-extra");
 var path = require("path");
 var process = require("process");

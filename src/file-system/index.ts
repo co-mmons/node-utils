@@ -1,30 +1,38 @@
-import * as FileSystem from "fs";
-import * as FileSystemExtra from "fs-extra";
-import * as Path from "path";
+import * as fs from "fs";
+import * as fse from "fs-extra";
+import * as path from "path";
 import * as ChildProcess from "child_process";
 import * as Glob from "glob";
 
 export function copyFileSync (source, target) {
-	FileSystem.writeFileSync(target, FileSystem.readFileSync(source));
+	fs.writeFileSync(target, fs.readFileSync(source));
 }
 
-export function copyFolderRecursiveSync (source, target) {
+export function copyFolderRecursiveSync (source: string, target: string, options?: {exclude?: Array<string | RegExp>}) {
 
-	if (!FileSystem.existsSync(target)) {
-		FileSystem.mkdirSync(target);
+	if (!fs.existsSync(target)) {
+		fs.mkdirSync(target);
 	}
 
 	// copy
-	if (FileSystem.lstatSync(source).isDirectory()) {
+	if (fs.lstatSync(source).isDirectory()) {
 
-		FileSystem.readdirSync(source).forEach(function (fileName) {
+		fs.readdirSync(source).forEach(function (fileName) {
 
-			var file = Path.join(source, fileName);
+			let file = path.join(source, fileName);
 
-			if (FileSystem.lstatSync(file).isDirectory()) {
-				copyFolderRecursiveSync(file, Path.join(target, fileName));
+			if (options && options.exclude) {
+				for (let e of options.exclude) {
+					if (file.match(e)) {
+						return;
+					}
+				}
+			}
+
+			if (fs.lstatSync(file).isDirectory()) {
+				copyFolderRecursiveSync(file, path.join(target, fileName));
 			} else {
-				copyFileSync(file, Path.join(target, fileName));
+				copyFileSync(file, path.join(target, fileName));
 			}
 
 		});
@@ -36,19 +44,19 @@ export function clearDir (dir) {
 	var files;
 
 	try {
-		files = FileSystem.readdirSync(dir);
+		files = fs.readdirSync(dir);
 	} catch (e) {
 		return;
 	}
 
 	if (files && files.length > 0) {
 		for (var i = 0; i < files.length; i++) {
-			var file = Path.resolve(dir, files[i]);
-			if (FileSystem.statSync(file).isFile()) {
-				FileSystem.unlinkSync(file);
+			var file = path.resolve(dir, files[i]);
+			if (fs.statSync(file).isFile()) {
+				fs.unlinkSync(file);
 			} else {
 				clearDir(file);
-				FileSystem.rmdirSync(file);
+				fs.rmdirSync(file);
 			}
 		}
 	}
@@ -58,7 +66,7 @@ export function createDirIfNotExists (path) {
 
 	var stat;
 	try {
-		stat = FileSystem.statSync(path);
+		stat = fs.statSync(path);
 	} catch (e) {
 	}
 
@@ -68,7 +76,7 @@ export function createDirIfNotExists (path) {
 	} else if (stat && stat.isDirectory()) {
 
 	} else {
-		FileSystem.mkdirSync(path);
+		fs.mkdirSync(path);
 	}
 }
 
@@ -76,7 +84,7 @@ export function dirExists (path) {
 
     var stat;
 	try {
-		stat = FileSystem.statSync(path);
+		stat = fs.statSync(path);
 	} catch (e) {
 	}
 
@@ -89,38 +97,38 @@ export function dirExists (path) {
 
 export function createDirs(folderPath: string, mode?: string) {
     let folders = [];
-    let tmpPath = Path.normalize(folderPath);
-    let exists = FileSystem.existsSync(tmpPath);
+    let tmpPath = path.normalize(folderPath);
+    let exists = fs.existsSync(tmpPath);
     while (!exists) {
         folders.push(tmpPath);
-        tmpPath = Path.join(tmpPath, '..');
-        exists = FileSystem.existsSync(tmpPath);
+        tmpPath = path.join(tmpPath, '..');
+        exists = fs.existsSync(tmpPath);
     }
 
     for (var i = folders.length - 1; i >= 0; i--) {
-        FileSystem.mkdirSync(folders[i], mode);
+        fs.mkdirSync(folders[i], mode);
     }
 }
 
 
 export function globDelete (paths, options) {
 
-    let rootDir = options && options.root ? Path.resolve(options.root) : process.cwd();
+    let rootDir = options && options.root ? path.resolve(options.root) : process.cwd();
 
     paths.forEach(function(query) {
 
         if (typeof query === "string") {
 
-            Glob.sync(query, {root: rootDir}).forEach(function(path) {
+            Glob.sync(query, {root: rootDir}).forEach(function(file) {
 
-                path = Path.resolve(rootDir, path);
+				file = path.resolve(rootDir, file);
 
-                var stat = FileSystem.statSync(path);
+				var stat = fs.statSync(file);
 
                 if (stat.isDirectory()) {
-					FileSystemExtra.removeSync(path);
+					fse.removeSync(file);
                 } else {
-                    FileSystem.unlinkSync(path);
+					fs.unlinkSync(file);
                 }
 
             });
@@ -132,8 +140,8 @@ export function globDelete (paths, options) {
 
 export function globCopy (source: string, segments: string[], target: string) {
 
-    let sourceDir = Path.resolve(source);
-	let targetDir = Path.resolve(target);
+    let sourceDir = path.resolve(source);
+	let targetDir = path.resolve(target);
 
     segments.forEach(function(query) {
 
@@ -141,13 +149,13 @@ export function globCopy (source: string, segments: string[], target: string) {
 
             Glob.sync((query.charAt(0) === "/" ? "" : "/") + query, {root: sourceDir}).forEach((segment) => {
 
-                let sourcePath = Path.resolve(sourceDir, segment);
-				let targetPath = Path.resolve(targetDir, segment.replace(sourceDir + "/", ""));
+                let sourcePath = path.resolve(sourceDir, segment);
+				let targetPath = path.resolve(targetDir, segment.replace(sourceDir + "/", ""));
 
-                let stat = FileSystem.statSync(sourcePath);
+                let stat = fs.statSync(sourcePath);
 
                 if (stat.isFile()) {
-					createDirs(Path.dirname(targetPath));
+					createDirs(path.dirname(targetPath));
 					copyFileSync(sourcePath, targetPath);
                 }
             });

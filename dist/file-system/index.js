@@ -1,25 +1,34 @@
 "use strict";
-var FileSystem = require("fs");
-var FileSystemExtra = require("fs-extra");
-var Path = require("path");
+Object.defineProperty(exports, "__esModule", { value: true });
+var fs = require("fs");
+var fse = require("fs-extra");
+var path = require("path");
 var Glob = require("glob");
 function copyFileSync(source, target) {
-    FileSystem.writeFileSync(target, FileSystem.readFileSync(source));
+    fs.writeFileSync(target, fs.readFileSync(source));
 }
 exports.copyFileSync = copyFileSync;
-function copyFolderRecursiveSync(source, target) {
-    if (!FileSystem.existsSync(target)) {
-        FileSystem.mkdirSync(target);
+function copyFolderRecursiveSync(source, target, options) {
+    if (!fs.existsSync(target)) {
+        fs.mkdirSync(target);
     }
     // copy
-    if (FileSystem.lstatSync(source).isDirectory()) {
-        FileSystem.readdirSync(source).forEach(function (fileName) {
-            var file = Path.join(source, fileName);
-            if (FileSystem.lstatSync(file).isDirectory()) {
-                copyFolderRecursiveSync(file, Path.join(target, fileName));
+    if (fs.lstatSync(source).isDirectory()) {
+        fs.readdirSync(source).forEach(function (fileName) {
+            var file = path.join(source, fileName);
+            if (options && options.exclude) {
+                for (var _i = 0, _a = options.exclude; _i < _a.length; _i++) {
+                    var e = _a[_i];
+                    if (file.match(e)) {
+                        return;
+                    }
+                }
+            }
+            if (fs.lstatSync(file).isDirectory()) {
+                copyFolderRecursiveSync(file, path.join(target, fileName));
             }
             else {
-                copyFileSync(file, Path.join(target, fileName));
+                copyFileSync(file, path.join(target, fileName));
             }
         });
     }
@@ -28,20 +37,20 @@ exports.copyFolderRecursiveSync = copyFolderRecursiveSync;
 function clearDir(dir) {
     var files;
     try {
-        files = FileSystem.readdirSync(dir);
+        files = fs.readdirSync(dir);
     }
     catch (e) {
         return;
     }
     if (files && files.length > 0) {
         for (var i = 0; i < files.length; i++) {
-            var file = Path.resolve(dir, files[i]);
-            if (FileSystem.statSync(file).isFile()) {
-                FileSystem.unlinkSync(file);
+            var file = path.resolve(dir, files[i]);
+            if (fs.statSync(file).isFile()) {
+                fs.unlinkSync(file);
             }
             else {
                 clearDir(file);
-                FileSystem.rmdirSync(file);
+                fs.rmdirSync(file);
             }
         }
     }
@@ -50,7 +59,7 @@ exports.clearDir = clearDir;
 function createDirIfNotExists(path) {
     var stat;
     try {
-        stat = FileSystem.statSync(path);
+        stat = fs.statSync(path);
     }
     catch (e) {
     }
@@ -60,14 +69,14 @@ function createDirIfNotExists(path) {
     else if (stat && stat.isDirectory()) {
     }
     else {
-        FileSystem.mkdirSync(path);
+        fs.mkdirSync(path);
     }
 }
 exports.createDirIfNotExists = createDirIfNotExists;
 function dirExists(path) {
     var stat;
     try {
-        stat = FileSystem.statSync(path);
+        stat = fs.statSync(path);
     }
     catch (e) {
     }
@@ -79,30 +88,30 @@ function dirExists(path) {
 exports.dirExists = dirExists;
 function createDirs(folderPath, mode) {
     var folders = [];
-    var tmpPath = Path.normalize(folderPath);
-    var exists = FileSystem.existsSync(tmpPath);
+    var tmpPath = path.normalize(folderPath);
+    var exists = fs.existsSync(tmpPath);
     while (!exists) {
         folders.push(tmpPath);
-        tmpPath = Path.join(tmpPath, '..');
-        exists = FileSystem.existsSync(tmpPath);
+        tmpPath = path.join(tmpPath, '..');
+        exists = fs.existsSync(tmpPath);
     }
     for (var i = folders.length - 1; i >= 0; i--) {
-        FileSystem.mkdirSync(folders[i], mode);
+        fs.mkdirSync(folders[i], mode);
     }
 }
 exports.createDirs = createDirs;
 function globDelete(paths, options) {
-    var rootDir = options && options.root ? Path.resolve(options.root) : process.cwd();
+    var rootDir = options && options.root ? path.resolve(options.root) : process.cwd();
     paths.forEach(function (query) {
         if (typeof query === "string") {
-            Glob.sync(query, { root: rootDir }).forEach(function (path) {
-                path = Path.resolve(rootDir, path);
-                var stat = FileSystem.statSync(path);
+            Glob.sync(query, { root: rootDir }).forEach(function (file) {
+                file = path.resolve(rootDir, file);
+                var stat = fs.statSync(file);
                 if (stat.isDirectory()) {
-                    FileSystemExtra.removeSync(path);
+                    fse.removeSync(file);
                 }
                 else {
-                    FileSystem.unlinkSync(path);
+                    fs.unlinkSync(file);
                 }
             });
         }
@@ -111,16 +120,16 @@ function globDelete(paths, options) {
 exports.globDelete = globDelete;
 ;
 function globCopy(source, segments, target) {
-    var sourceDir = Path.resolve(source);
-    var targetDir = Path.resolve(target);
+    var sourceDir = path.resolve(source);
+    var targetDir = path.resolve(target);
     segments.forEach(function (query) {
         if (typeof query === "string") {
             Glob.sync((query.charAt(0) === "/" ? "" : "/") + query, { root: sourceDir }).forEach(function (segment) {
-                var sourcePath = Path.resolve(sourceDir, segment);
-                var targetPath = Path.resolve(targetDir, segment.replace(sourceDir + "/", ""));
-                var stat = FileSystem.statSync(sourcePath);
+                var sourcePath = path.resolve(sourceDir, segment);
+                var targetPath = path.resolve(targetDir, segment.replace(sourceDir + "/", ""));
+                var stat = fs.statSync(sourcePath);
                 if (stat.isFile()) {
-                    createDirs(Path.dirname(targetPath));
+                    createDirs(path.dirname(targetPath));
                     copyFileSync(sourcePath, targetPath);
                 }
             });

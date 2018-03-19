@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var FileSystem = require("fs");
 var Path = require("path");
 var ChildProcess = require("child_process");
