@@ -8,6 +8,6 @@ if (process.cwd().indexOf("node_modules") > -1) {
     var source = path.join(process.cwd(), "dist");
     var target = process.cwd();
     if (file_system_1.dirExists(source)) {
-        file_system_1.copyFolderRecursiveSync(source, target, { exclude: ["dist/package.json$", "dist/package-lock.json$"] });
+        file_system_1.copyFolderRecursiveSync(source, target, { exclude: ["dist/package.json$", "dist/package-lock.json$", "dist/node_modules"] });
     }
 }

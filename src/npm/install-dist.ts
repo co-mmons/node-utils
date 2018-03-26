@@ -10,6 +10,6 @@ if (process.cwd().indexOf("node_modules") > -1) {
     let target = process.cwd();
 
     if (dirExists(source)) {
-        copyFolderRecursiveSync(source, target, {exclude: ["dist/package.json$", "dist/package-lock.json$"]});
+        copyFolderRecursiveSync(source, target, {exclude: ["dist/package.json$", "dist/package-lock.json$", "dist/node_modules"]});
     }
 }
