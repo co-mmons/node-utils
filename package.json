@@ -15,13 +15,13 @@
     "install": "node-utils-npm-install-dist"
   },
   "dependencies": {
-    "chokidar": "^2.0.2",
+    "chokidar": "^2.0.3",
     "fs-extra": "^5.0.0",
     "glob": "^7.1.2"
   },
   "devDependencies": {
     "@types/chokidar": "^1.7.5",
-    "@types/fs-extra": "^5.0.1",
+    "@types/fs-extra": "^5.0.2",
     "@types/glob": "^5.0.35",
     "@types/node": "^9.4.7",
     "typescript": "^2.7.2"
