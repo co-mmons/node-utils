@@ -123,13 +123,16 @@ export function globDelete (paths, options) {
 
 				file = path.resolve(rootDir, file);
 
-				var stat = fs.statSync(file);
+				if (fs.existsSync(file)) {
 
-                if (stat.isDirectory()) {
-					fse.removeSync(file);
-                } else {
-					fs.unlinkSync(file);
-                }
+					let stat = fs.statSync(file);
+
+					if (stat.isDirectory()) {
+						fse.removeSync(file);
+					} else {
+						fs.unlinkSync(file);
+					}
+				}
 
             });
         }

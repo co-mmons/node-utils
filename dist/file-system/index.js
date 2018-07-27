@@ -106,12 +106,14 @@ function globDelete(paths, options) {
         if (typeof query === "string") {
             Glob.sync(query, { root: rootDir }).forEach(function (file) {
                 file = path.resolve(rootDir, file);
-                var stat = fs.statSync(file);
-                if (stat.isDirectory()) {
-                    fse.removeSync(file);
-                }
-                else {
-                    fs.unlinkSync(file);
+                if (fs.existsSync(file)) {
+                    var stat = fs.statSync(file);
+                    if (stat.isDirectory()) {
+                        fse.removeSync(file);
+                    }
+                    else {
+                        fs.unlinkSync(file);
+                    }
                 }
             });
         }
