@@ -7,6 +7,8 @@
   "bin": {
     "node-utils-file-system-copy-directory": "dist/file-system/copy-directory.js",
     "node-utils-file-system-glob-copy": "dist/file-system/glob-copy.js",
+    "node-utils-file-system-glob-delete": "dist/file-system/glob-delete.js",
+    "node-utils-file-system-glob-rename": "dist/file-system/glob-rename.js",
     "node-utils-file-system-watch-duplicate": "dist/file-system/watch-duplicate.js",
     "node-utils-npm-link-local-package": "dist/npm/link-local-package.js",
     "node-utils-npm-install-dist": "dist/npm/install-dist.js"
@@ -15,15 +17,15 @@
     "install": "node-utils-npm-install-dist"
   },
   "dependencies": {
-    "chokidar": "^2.0.3",
-    "fs-extra": "^5.0.0",
+    "chokidar": "^2.0.4",
+    "fs-extra": "^7.0.0",
     "glob": "^7.1.2"
   },
   "devDependencies": {
     "@types/chokidar": "^1.7.5",
-    "@types/fs-extra": "^5.0.2",
+    "@types/fs-extra": "^5.0.4",
     "@types/glob": "^5.0.35",
     "@types/node": "^9.4.7",
-    "typescript": "^2.7.2"
+    "typescript": "^2.9.2"
   }
 }

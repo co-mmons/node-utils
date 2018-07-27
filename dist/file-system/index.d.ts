@@ -8,3 +8,4 @@ export declare function dirExists(path: any): boolean;
 export declare function createDirs(folderPath: string, mode?: string): void;
 export declare function globDelete(paths: any, options: any): void;
 export declare function globCopy(source: string, segments: string[], target: string): void;
+export declare function globRename(source: string, matches: string[], find: string, replace: string): void;

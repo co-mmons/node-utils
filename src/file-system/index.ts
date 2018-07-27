@@ -164,3 +164,26 @@ export function globCopy (source: string, segments: string[], target: string) {
     });
 
 };
+
+export function globRename(source: string, matches: string[], find: string, replace: string) {
+
+	let sourceDir = source ? path.resolve(source) : process.cwd();
+
+	matches.forEach(function (match) {
+
+		if (typeof match === "string") {
+
+			Glob.sync((match.charAt(0) === "/" ? "" : "/") + match, {root: sourceDir}).forEach((file) => {
+
+				let sourcePath = path.resolve(sourceDir, file);
+				let targetPath = path.resolve(sourceDir, file.replace(sourceDir + "/", "").replace(find, replace));
+
+				if (sourcePath != targetPath) {
+					fs.renameSync(sourcePath, targetPath);
+				}
+			});
+		}
+
+	});
+
+};
