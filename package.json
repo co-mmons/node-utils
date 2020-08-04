@@ -14,7 +14,6 @@
     "node-utils-npm-install-dist": "npm/cli/installDist.js"
   },
   "scripts": {
-    "install": "node dist/npm/cli/installDist.js",
     "build": "ts-node src/file-system/cli/clearDir.ts dist && tsc"
   },
   "dependencies": {

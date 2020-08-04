@@ -1,10 +1,8 @@
 #!/usr/bin/env node
 
-import * as fse from "fs-extra";
 import * as path from "path";
 import * as process from "process";
-
-import {copyDirRecursiveSync, dirExists} from "../../file-system";
+import {clearDir, copyDirRecursiveSync, dirExists} from "../../file-system";
 
 if (process.cwd().indexOf("node_modules") > -1) {
     const source = path.join(process.cwd(), "dist");
@@ -12,6 +10,6 @@ if (process.cwd().indexOf("node_modules") > -1) {
 
     if (dirExists(source)) {
         copyDirRecursiveSync(source, target, {exclude: ["dist/package.json$", "dist/package-lock.json$", "dist/node_modules"]});
-        fse.removeSync(source);
+        clearDir(source);
     }
 }
