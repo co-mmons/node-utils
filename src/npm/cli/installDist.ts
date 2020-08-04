@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-import * as path from "path";
-import * as process from "process";
 import fse from "fs-extra";
+import path from "path";
+import process from "process";
 
-import {clearDir, copyDirRecursiveSync, dirExists} from "../../file-system";
+import {copyDirRecursiveSync, dirExists} from "../../file-system";
 
 if (process.cwd().indexOf("node_modules") > -1) {
     const source = path.join(process.cwd(), "dist");
