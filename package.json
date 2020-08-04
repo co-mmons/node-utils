@@ -5,13 +5,13 @@
   "private": false,
   "license": "MIT",
   "bin": {
-    "node-utils-file-system-copy-directory": "file-system/cli/copyDirectory.js",
-    "node-utils-file-system-glob-copy": "file-system/cli/globCopy.js",
-    "node-utils-file-system-glob-delete": "file-system/cli/globDelete.js",
-    "node-utils-file-system-glob-rename": "file-system/cli/globRename.js",
-    "node-utils-file-system-watch-duplicate": "file-system/cli/watchDuplicate.js",
-    "node-utils-npm-link-local-package": "npm/cli/linkLocalPackage.js",
-    "node-utils-npm-install-dist": "npm/cli/installDist.js"
+    "node-utils-file-system-copy-directory": "dist/file-system/cli/copyDirectory.js",
+    "node-utils-file-system-glob-copy": "dist/file-system/cli/globCopy.js",
+    "node-utils-file-system-glob-delete": "dist/file-system/cli/globDelete.js",
+    "node-utils-file-system-glob-rename": "dist/file-system/cli/globRename.js",
+    "node-utils-file-system-watch-duplicate": "dist/file-system/cli/watchDuplicate.js",
+    "node-utils-npm-link-local-package": "dist/npm/cli/linkLocalPackage.js",
+    "node-utils-npm-install-dist": "dist/npm/cli/installDist.js"
   },
   "scripts": {
     "build": "ts-node src/file-system/cli/clearDir.ts dist && tsc"
