@@ -1,6 +1,6 @@
-import fs from "fs";
+import * as fs from "fs";
 import * as Glob from "glob";
-import path from "path";
+import * as path from "path";
 import {copyFileSync} from "./copyFileSync";
 import {createDirs} from "./createDirs";
 

@@ -1,1 +1,1 @@
-export declare function clearDir(dir: any): void;
+export declare function clearDir(dir: string): void;

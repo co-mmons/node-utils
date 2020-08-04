@@ -1,6 +1,6 @@
-import fs from "fs";
+import * as fs from "fs";
 import * as Glob from "glob";
-import path from "path";
+import * as path from "path";
 
 export function globRename(source: string, matches: string[], find: string, replace: string) {
 

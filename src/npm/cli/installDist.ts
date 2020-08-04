@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import fse from "fs-extra";
-import path from "path";
-import process from "process";
+import * as fse from "fs-extra";
+import * as path from "path";
+import * as process from "process";
 
 import {copyDirRecursiveSync, dirExists} from "../../file-system";
 

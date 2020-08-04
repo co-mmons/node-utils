@@ -1,7 +1,7 @@
-import fs from "fs";
+import * as fs from "fs";
 import * as fse from "fs-extra";
 import * as Glob from "glob";
-import path from "path";
+import * as path from "path";
 
 export function globDelete(paths, options) {
 
