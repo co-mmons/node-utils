@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var ChildProcess = require("child_process");
 var FileSystem = require("fs");
 var Path = require("path");
-var ChildProcess = require("child_process");
 var args = process.argv.slice(2);
 var nodeModulesPath = Path.join(process.cwd(), "node_modules");
 var packageName = args.length > 0 ? args[0] : undefined;

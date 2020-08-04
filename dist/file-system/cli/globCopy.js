@@ -3,10 +3,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var path = require("path");
 var process = require("process");
-var _1 = require("./");
+var globCopy_1 = require("../globCopy");
 var args = process.argv.slice(2);
 var source = path.resolve(args[0]);
 var target = path.resolve(args[1]);
-if (_1.dirExists(source)) {
-    _1.copyFolderRecursiveSync(source, target);
-}
+var segments = args.slice(2);
+globCopy_1.globCopy(source, segments, target);
