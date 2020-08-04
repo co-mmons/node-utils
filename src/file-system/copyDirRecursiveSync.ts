@@ -1,5 +1,5 @@
-import fs from "fs";
-import path from "path";
+import * as fs from "fs";
+import * as path from "path";
 import {copyFileSync} from "./copyFileSync";
 
 export function copyDirRecursiveSync(source: string, target: string, options?: { exclude?: Array<string | RegExp> }) {
