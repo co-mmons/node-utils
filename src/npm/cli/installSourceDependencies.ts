@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import * as fs from "fs-extra";
 import * as path from "path";
 import * as process from "process";
@@ -30,7 +32,14 @@ if (process.cwd().indexOf("node_modules") < 0) {
 }
 
 function readPackageJson(dir: string, deps: {[depsName: string]: string}) {
-    const pckg = fs.readJsonSync(path.resolve(dir, "package.json"));
+
+    const jsonPath = path.resolve(dir, "package.json");
+    if (!fs.existsSync(jsonPath)) {
+        console.warn("Missing package.json in " + dir + " - it should be there if you want to use source dependencies.");
+        return deps;
+    }
+
+    const pckg = fs.readJsonSync(jsonPath);
 
     if (deps[pckg.name]) {
         return deps;
@@ -41,7 +50,7 @@ function readPackageJson(dir: string, deps: {[depsName: string]: string}) {
     }
 
     for (const dep of pckg.sourceDependencies || []) {
-        readPackageJson(path.resolve(rootDir, dep), deps);
+        readPackageJson(path.resolve(rootDir, "node_modules", dep), deps);
     }
 
     return deps;

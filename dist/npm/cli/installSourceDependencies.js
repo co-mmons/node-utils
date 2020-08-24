@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var fs = require("fs-extra");
@@ -24,7 +25,12 @@ if (process.cwd().indexOf("node_modules") < 0) {
     }
 }
 function readPackageJson(dir, deps) {
-    var pckg = fs.readJsonSync(path.resolve(dir, "package.json"));
+    var jsonPath = path.resolve(dir, "package.json");
+    if (!fs.existsSync(jsonPath)) {
+        console.warn("Missing package.json in " + dir + " - it should be there if you want to use source dependencies.");
+        return deps;
+    }
+    var pckg = fs.readJsonSync(jsonPath);
     if (deps[pckg.name]) {
         return deps;
     }
@@ -33,7 +39,7 @@ function readPackageJson(dir, deps) {
     }
     for (var _i = 0, _a = pckg.sourceDependencies || []; _i < _a.length; _i++) {
         var dep = _a[_i];
-        readPackageJson(path.resolve(rootDir, dep), deps);
+        readPackageJson(path.resolve(rootDir, "node_modules", dep), deps);
     }
     return deps;
 }
