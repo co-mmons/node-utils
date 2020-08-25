@@ -17,11 +17,11 @@ if (process.cwd().indexOf("node_modules") < 0) {
         if (Object.keys(deps).length) {
 
             if (pckg.sourceDependenciesOutDir) {
-                const out = path.resolve(rootDir, pckg.sourceDependenciesOutDir);
-                fs.ensureDirSync(out);
 
                 for (const depName in deps) {
-                    copyDirRecursiveSync(deps[depName], path.resolve(out, depName));
+                    const out = path.resolve(rootDir, pckg.sourceDependenciesOutDir, depName);
+                    fs.ensureDirSync(out);
+                    copyDirRecursiveSync(deps[depName], out);
                 }
 
             } else {

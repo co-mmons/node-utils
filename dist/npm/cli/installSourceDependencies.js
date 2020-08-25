@@ -12,10 +12,10 @@ if (process.cwd().indexOf("node_modules") < 0) {
         var deps = readPackageJson(rootDir, {});
         if (Object.keys(deps).length) {
             if (pckg.sourceDependenciesOutDir) {
-                var out = path.resolve(rootDir, pckg.sourceDependenciesOutDir);
-                fs.ensureDirSync(out);
                 for (var depName in deps) {
-                    file_system_1.copyDirRecursiveSync(deps[depName], path.resolve(out, depName));
+                    var out = path.resolve(rootDir, pckg.sourceDependenciesOutDir, depName);
+                    fs.ensureDirSync(out);
+                    file_system_1.copyDirRecursiveSync(deps[depName], out);
                 }
             }
             else {
