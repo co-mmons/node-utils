@@ -14,31 +14,34 @@ if (pckg.sourceDependenciesOutDir) {
     console.log(`Started watching source dependencies:`);
 
     for (const depName of Object.keys(dependencies)) {
-        const source = dependencies[depName].path;
-        const out = path.resolve(rootDir, pckg.sourceDependenciesOutDir, depName);
-        const watcher = watch.watch(source, {ignored: ".DS_Store"});
 
-        console.log(`* ${out}`);
+        if (dependencies[depName].repoPath) {
+            const source = path.resolve(dependencies[depName].repoPath);
+            const out = path.resolve(rootDir, pckg.sourceDependenciesOutDir, depName);
+            const watcher = watch.watch(source, {ignored: ".DS_Store"});
 
-        watcher.on("change", (filename, stats) => {
-            console.log(`changed file ${filename}`);
-            fse.copySync(filename, path.join(out, filename.substr(source.length)), {preserveTimestamps: true});
-        });
+            console.log(`* ${out}`);
 
-        watcher.on("add", (filename, stats) => {
-            console.log(`added file ${filename}`);
-            fse.copySync(filename, path.join(out, filename.substr(source.length)), {preserveTimestamps: true});
-        });
+            watcher.on("change", (filename, stats) => {
+                console.log(`changed file ${filename}`);
+                fse.copySync(filename, path.join(out, filename.substr(source.length)), {preserveTimestamps: true});
+            });
 
-        watcher.on("unlink", (filename, stats) => {
-            console.log(`deleted file ${filename}`);
-            fse.removeSync(path.join(out, filename.substr(source.length)));
-        });
+            watcher.on("add", (filename, stats) => {
+                console.log(`added file ${filename}`);
+                fse.copySync(filename, path.join(out, filename.substr(source.length)), {preserveTimestamps: true});
+            });
 
-        watcher.on("unlinkDir", (filename, stats) => {
-            console.log(`deleted dir ${filename}`);
-            fse.removeSync(path.join(out, filename.substr(source.length)));
-        });
+            watcher.on("unlink", (filename, stats) => {
+                console.log(`deleted file ${filename}`);
+                fse.removeSync(path.join(out, filename.substr(source.length)));
+            });
+
+            watcher.on("unlinkDir", (filename, stats) => {
+                console.log(`deleted dir ${filename}`);
+                fse.removeSync(path.join(out, filename.substr(source.length)));
+            });
+        }
     }
 }
 
