@@ -5,7 +5,7 @@ import {copyDirRecursiveSync} from "../../file-system";
 const rootDir = path.resolve("./");
 
 interface SourceDependencies {
-    [depsName: string]: {path?: string, repoPath?: string}
+    [depsName: string]: {modulePath: string, srcPath: string, srcDir: string, repoPath?: string}
 }
 
 export function sourceDependencies() {
@@ -34,7 +34,7 @@ function readPackageDependencies(dir: string, deps: SourceDependencies) {
     }
 
     if (pckg.sourceDependencyDir) {
-        deps[pckg.name] = {path: path.resolve(dir, pckg.sourceDependencyDir)};
+        deps[pckg.name] = {modulePath: path.resolve(dir), srcPath: path.resolve(dir, pckg.sourceDependencyDir), srcDir: pckg.sourceDependencyDir};
     }
 
     const sourceDeps: {[moduleName: string]: {repoPath?: string}} = Array.isArray(pckg.sourceDependencies) ? Object.assign({}, ...((pckg.sourceDependencies as string[]).map(dep => ({[dep]: {}})))) : pckg.sourceDependencies;
@@ -43,7 +43,7 @@ function readPackageDependencies(dir: string, deps: SourceDependencies) {
         readPackageDependencies(path.resolve(rootDir, "node_modules", moduleName), deps);
 
         if (rootDir === dir && sourceDeps[moduleName].repoPath && deps[moduleName]) {
-            deps[moduleName].repoPath = sourceDeps[moduleName].repoPath;
+            deps[moduleName].repoPath = path.resolve(sourceDeps[moduleName].repoPath);
         }
     }
 

@@ -31,7 +31,7 @@ function readPackageDependencies(dir, deps) {
         return deps;
     }
     if (pckg.sourceDependencyDir) {
-        deps[pckg.name] = { path: path.resolve(dir, pckg.sourceDependencyDir) };
+        deps[pckg.name] = { modulePath: path.resolve(dir), srcPath: path.resolve(dir, pckg.sourceDependencyDir), srcDir: pckg.sourceDependencyDir };
     }
     var sourceDeps = Array.isArray(pckg.sourceDependencies) ? Object.assign.apply(Object, __spreadArrays([{}], (pckg.sourceDependencies.map(function (dep) {
         var _a;
@@ -40,7 +40,7 @@ function readPackageDependencies(dir, deps) {
     for (var moduleName in sourceDeps) {
         readPackageDependencies(path.resolve(rootDir, "node_modules", moduleName), deps);
         if (rootDir === dir && sourceDeps[moduleName].repoPath && deps[moduleName]) {
-            deps[moduleName].repoPath = sourceDeps[moduleName].repoPath;
+            deps[moduleName].repoPath = path.resolve(sourceDeps[moduleName].repoPath);
         }
     }
     return deps;

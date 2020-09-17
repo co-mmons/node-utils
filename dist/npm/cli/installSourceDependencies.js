@@ -16,7 +16,7 @@ if (process.cwd().indexOf("node_modules") < 0) {
                 var depName = _a[_i];
                 var out = path.resolve(rootDir, pckg.sourceDependenciesOutDir, depName);
                 fs.ensureDirSync(out);
-                file_system_1.copyDirRecursiveSync(dependencies[depName].path, out);
+                file_system_1.copyDirRecursiveSync(dependencies[depName].srcPath, out);
             }
         }
         else {

@@ -1,6 +1,8 @@
 interface SourceDependencies {
     [depsName: string]: {
-        path?: string;
+        modulePath: string;
+        srcPath: string;
+        srcDir: string;
         repoPath?: string;
     };
 }

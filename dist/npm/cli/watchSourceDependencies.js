@@ -13,7 +13,7 @@ if (pckg.sourceDependenciesOutDir) {
     console.log("Started watching source dependencies:");
     var _loop_1 = function (depName) {
         if (dependencies[depName].repoPath) {
-            var source_1 = path.resolve(dependencies[depName].repoPath);
+            var source_1 = path.resolve(dependencies[depName].repoPath, dependencies[depName].srcDir);
             var out_1 = path.resolve(rootDir, pckg.sourceDependenciesOutDir, depName);
             var watcher = watch.watch(source_1, { ignored: ".DS_Store" });
             console.log("* " + out_1);

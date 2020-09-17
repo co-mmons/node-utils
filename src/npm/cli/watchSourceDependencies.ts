@@ -16,7 +16,7 @@ if (pckg.sourceDependenciesOutDir) {
     for (const depName of Object.keys(dependencies)) {
 
         if (dependencies[depName].repoPath) {
-            const source = path.resolve(dependencies[depName].repoPath);
+            const source = path.resolve(dependencies[depName].repoPath, dependencies[depName].srcDir);
             const out = path.resolve(rootDir, pckg.sourceDependenciesOutDir, depName);
             const watcher = watch.watch(source, {ignored: ".DS_Store"});
 

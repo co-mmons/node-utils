@@ -19,7 +19,7 @@ if (process.cwd().indexOf("node_modules") < 0) {
             for (const depName of Object.keys(dependencies)) {
                 const out = path.resolve(rootDir, pckg.sourceDependenciesOutDir, depName);
                 fs.ensureDirSync(out);
-                copyDirRecursiveSync(dependencies[depName].path, out);
+                copyDirRecursiveSync(dependencies[depName].srcPath, out);
             }
 
         } else {
