@@ -11,7 +11,8 @@
     "node-utils-file-system-glob-rename": "dist/file-system/cli/globRename.js",
     "node-utils-file-system-watch-duplicate": "dist/file-system/cli/watchDuplicate.js",
     "node-utils-npm-install-dist": "dist/npm/cli/installDist.js",
-    "node-utils-npm-install-source-dependencies": "dist/npm/cli/installSourceDependencies.js"
+    "node-utils-npm-install-source-dependencies": "dist/npm/cli/installSourceDependencies.js",
+    "node-utils-npm-watch-source-dependencies": "dist/npm/cli/watchSourceDependencies.js"
   },
   "scripts": {
     "build": "ts-node src/file-system/cli/clearDir.ts dist && tsc"
