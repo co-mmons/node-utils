@@ -11,10 +11,10 @@ exports.sourceDependencies = void 0;
 var fs = require("fs-extra");
 var path = require("path");
 var rootDir = path.resolve("./");
+var rootPckg = fs.readJsonSync("package.json");
 function sourceDependencies() {
-    var pckg = fs.readJsonSync("package.json");
     var deps = {};
-    if (pckg.sourceDependencies) {
+    if (rootPckg.sourceDependencies) {
         readPackageDependencies(rootDir, deps);
     }
     return deps;
@@ -30,7 +30,7 @@ function readPackageDependencies(dir, deps) {
     if (deps[pckg.name]) {
         return deps;
     }
-    if (pckg.sourceDependencyDir) {
+    if (pckg.sourceDependencyDir && pckg.name !== rootPckg.name) {
         deps[pckg.name] = { modulePath: path.resolve(dir), srcPath: path.resolve(dir, pckg.sourceDependencyDir), srcDir: pckg.sourceDependencyDir };
     }
     var sourceDeps = Array.isArray(pckg.sourceDependencies) ? Object.assign.apply(Object, __spreadArrays([{}], (pckg.sourceDependencies.map(function (dep) {

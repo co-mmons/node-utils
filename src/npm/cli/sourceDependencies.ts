@@ -1,18 +1,17 @@
 import * as fs from "fs-extra";
 import * as path from "path";
-import {copyDirRecursiveSync} from "../../file-system";
 
 const rootDir = path.resolve("./");
+const rootPckg = fs.readJsonSync("package.json");
 
 interface SourceDependencies {
     [depsName: string]: {modulePath: string, srcPath: string, srcDir: string, repoPath?: string}
 }
 
 export function sourceDependencies() {
-    const pckg = fs.readJsonSync("package.json");
     const deps: SourceDependencies = {};
 
-    if (pckg.sourceDependencies) {
+    if (rootPckg.sourceDependencies) {
         readPackageDependencies(rootDir, deps);
     }
 
@@ -33,7 +32,7 @@ function readPackageDependencies(dir: string, deps: SourceDependencies) {
         return deps;
     }
 
-    if (pckg.sourceDependencyDir) {
+    if (pckg.sourceDependencyDir && pckg.name !== rootPckg.name) {
         deps[pckg.name] = {modulePath: path.resolve(dir), srcPath: path.resolve(dir, pckg.sourceDependencyDir), srcDir: pckg.sourceDependencyDir};
     }
 
