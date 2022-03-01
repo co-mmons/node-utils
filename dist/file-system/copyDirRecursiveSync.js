@@ -24,7 +24,7 @@ function copyDirRecursiveSync(source, target, options) {
                 copyDirRecursiveSync(file, path.join(target, fileName));
             }
             else {
-                copyFileSync_1.copyFileSync(file, path.join(target, fileName));
+                (0, copyFileSync_1.copyFileSync)(file, path.join(target, fileName));
             }
         });
     }

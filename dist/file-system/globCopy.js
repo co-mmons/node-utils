@@ -16,8 +16,8 @@ function globCopy(source, segments, target) {
                 var targetPath = path.resolve(targetDir, segment.replace(sourceDir + "/", ""));
                 var stat = fs.statSync(sourcePath);
                 if (stat.isFile()) {
-                    createDirs_1.createDirs(path.dirname(targetPath));
-                    copyFileSync_1.copyFileSync(sourcePath, targetPath);
+                    (0, createDirs_1.createDirs)(path.dirname(targetPath));
+                    (0, copyFileSync_1.copyFileSync)(sourcePath, targetPath);
                 }
             });
         }

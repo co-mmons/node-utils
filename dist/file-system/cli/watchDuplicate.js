@@ -17,20 +17,20 @@ if (!target) {
     process.exit(0);
 }
 var watcher = watch.watch(source, { ignored: ".DS_Store" });
-console.log("Started watch-duplicate of " + source + ", duplicated to " + target);
+console.log("Started watch-duplicate of ".concat(source, ", duplicated to ").concat(target));
 watcher.on("change", function (filename, stats) {
-    console.log("Changed file " + filename);
+    console.log("Changed file ".concat(filename));
     fse.copySync(filename, path.join(target, filename.substr(source.length)), { preserveTimestamps: true });
 });
 watcher.on("add", function (filename, stats) {
-    console.log("Added file " + filename);
+    console.log("Added file ".concat(filename));
     fse.copySync(filename, path.join(target, filename.substr(source.length)), { preserveTimestamps: true });
 });
 watcher.on("unlink", function (filename, stats) {
-    console.log("Deleted file " + filename);
+    console.log("Deleted file ".concat(filename));
     fse.removeSync(path.join(target, filename.substr(source.length)));
 });
 watcher.on("unlinkDir", function (filename, stats) {
-    console.log("Deleted dir " + filename);
+    console.log("Deleted dir ".concat(filename));
     fse.removeSync(path.join(target, filename.substr(source.length)));
 });

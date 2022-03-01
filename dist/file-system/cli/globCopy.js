@@ -8,4 +8,4 @@ var args = process.argv.slice(2);
 var source = path.resolve(args[0]);
 var target = path.resolve(args[1]);
 var segments = args.slice(2);
-globCopy_1.globCopy(source, segments, target);
+(0, globCopy_1.globCopy)(source, segments, target);

@@ -8,6 +8,6 @@ var dirExists_1 = require("../dirExists");
 var args = process.argv.slice(2);
 var source = path.resolve(args[0]);
 var target = path.resolve(args[1]);
-if (dirExists_1.dirExists(source)) {
-    copyDirRecursiveSync_1.copyDirRecursiveSync(source, target);
+if ((0, dirExists_1.dirExists)(source)) {
+    (0, copyDirRecursiveSync_1.copyDirRecursiveSync)(source, target);
 }

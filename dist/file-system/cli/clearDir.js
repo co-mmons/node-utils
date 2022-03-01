@@ -7,6 +7,6 @@ var clearDir_1 = require("../clearDir");
 var dirExists_1 = require("../dirExists");
 var args = process.argv.slice(2);
 var source = path.resolve(args[0]);
-if (dirExists_1.dirExists(source)) {
-    clearDir_1.clearDir(source);
+if ((0, dirExists_1.dirExists)(source)) {
+    (0, clearDir_1.clearDir)(source);
 }
