@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var path = require("path");
 var process = require("process");
 var file_system_1 = require("../../file-system");
+console.log("Install dist in", process.cwd());
 if (process.cwd().indexOf("node_modules") > -1) {
     var source = path.join(process.cwd(), "dist");
     var target = process.cwd();
