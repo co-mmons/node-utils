@@ -4,7 +4,7 @@ import * as path from "path";
 import * as process from "process";
 import {clearDir, copyDirRecursiveSync, dirExists} from "../../file-system";
 
-console.log("Install dist in", process.cwd());
+console.log("Install dist", process.cwd());
 
 if (process.cwd().indexOf("node_modules") > -1) {
     const source = path.join(process.cwd(), "dist");
