@@ -8,6 +8,7 @@ if (process.cwd().indexOf("node_modules") > -1) {
     var source = path.join(process.cwd(), "dist");
     var target = process.cwd();
     if ((0, file_system_1.dirExists)(source)) {
+        console.log("Copy dist", source, "==>", target);
         (0, file_system_1.copyDirRecursiveSync)(source, target, { exclude: ["dist/package.json$", "dist/package-lock.json$", "dist/node_modules"] });
         (0, file_system_1.clearDir)(source);
     }
