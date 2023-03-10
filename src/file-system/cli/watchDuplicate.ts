@@ -26,7 +26,14 @@ console.log(`Started watch-duplicate of ${source}, duplicated to ${target}`)
 
 watcher.on("change", (filename, stats) => {
     console.log(`Changed file ${filename}`);
-    fse.copySync(filename, path.join(target, filename.substr(source.length)), {preserveTimestamps: true});
+
+    const inputBuffer = fse.readFileSync(path.join(source, filename));
+    const destPath = path.join(target, filename.substr(source.length));
+    const destBuffer = fse.statSync(destPath).isFile() && fse.readFileSync(destPath);
+
+    if (!destBuffer || !inputBuffer.equals(destBuffer)) {
+        fse.copySync(filename, path.join(target, filename.substr(source.length)), {preserveTimestamps: true});
+    }
 });
 
 watcher.on("add", (filename, stats) => {

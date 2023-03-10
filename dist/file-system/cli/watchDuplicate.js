@@ -20,7 +20,12 @@ var watcher = watch.watch(source, { ignored: ".DS_Store" });
 console.log("Started watch-duplicate of ".concat(source, ", duplicated to ").concat(target));
 watcher.on("change", function (filename, stats) {
     console.log("Changed file ".concat(filename));
-    fse.copySync(filename, path.join(target, filename.substr(source.length)), { preserveTimestamps: true });
+    var inputBuffer = fse.readFileSync(path.join(source, filename));
+    var destPath = path.join(target, filename.substr(source.length));
+    var destBuffer = fse.statSync(destPath).isFile() && fse.readFileSync(destPath);
+    if (!destBuffer || !inputBuffer.equals(destBuffer)) {
+        fse.copySync(filename, path.join(target, filename.substr(source.length)), { preserveTimestamps: true });
+    }
 });
 watcher.on("add", function (filename, stats) {
     console.log("Added file ".concat(filename));
