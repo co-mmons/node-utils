@@ -18,18 +18,23 @@ if (!target) {
 }
 var watcher = watch.watch(source, { ignored: ".DS_Store" });
 console.log("Started watch-duplicate of ".concat(source, ", duplicated to ").concat(target));
-watcher.on("change", function (filename, stats) {
-    console.log("Changed file ".concat(filename));
-    var inputBuffer = fse.readFileSync(path.join(source, filename));
-    var destPath = path.join(target, filename.substr(source.length));
+function fileEquals(input) {
+    var inputBuffer = fse.readFileSync(input);
+    var destPath = path.join(target, input.substring(source.length));
     var destBuffer = fse.statSync(destPath).isFile() && fse.readFileSync(destPath);
-    if (!destBuffer || !inputBuffer.equals(destBuffer)) {
-        fse.copySync(filename, path.join(target, filename.substr(source.length)), { preserveTimestamps: true });
+    return destBuffer && inputBuffer.equals(destBuffer);
+}
+watcher.on("change", function (filename, stats) {
+    if (!fileEquals(filename)) {
+        console.log("Changed file ".concat(filename));
+        fse.copySync(filename, path.join(target, filename.substring(source.length)), { preserveTimestamps: true });
     }
 });
 watcher.on("add", function (filename, stats) {
-    console.log("Added file ".concat(filename));
-    fse.copySync(filename, path.join(target, filename.substr(source.length)), { preserveTimestamps: true });
+    if (!fileEquals(filename)) {
+        console.log("Added file ".concat(filename));
+        fse.copySync(filename, path.join(target, filename.substr(source.length)), { preserveTimestamps: true });
+    }
 });
 watcher.on("unlink", function (filename, stats) {
     console.log("Deleted file ".concat(filename));

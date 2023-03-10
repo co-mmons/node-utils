@@ -24,21 +24,27 @@ const watcher = watch.watch(source, {ignored: ".DS_Store"});
 
 console.log(`Started watch-duplicate of ${source}, duplicated to ${target}`)
 
-watcher.on("change", (filename, stats) => {
-    console.log(`Changed file ${filename}`);
+function fileEquals(input: string) {
 
-    const inputBuffer = fse.readFileSync(path.join(source, filename));
-    const destPath = path.join(target, filename.substr(source.length));
+    const inputBuffer = fse.readFileSync(input);
+    const destPath = path.join(target, input.substring(source.length));
     const destBuffer = fse.statSync(destPath).isFile() && fse.readFileSync(destPath);
 
-    if (!destBuffer || !inputBuffer.equals(destBuffer)) {
-        fse.copySync(filename, path.join(target, filename.substr(source.length)), {preserveTimestamps: true});
+    return destBuffer && inputBuffer.equals(destBuffer);
+}
+
+watcher.on("change", (filename, stats) => {
+    if (!fileEquals(filename)) {
+        console.log(`Changed file ${filename}`);
+        fse.copySync(filename, path.join(target, filename.substring(source.length)), {preserveTimestamps: true});
     }
 });
 
 watcher.on("add", (filename, stats) => {
-    console.log(`Added file ${filename}`);
-    fse.copySync(filename, path.join(target, filename.substr(source.length)), {preserveTimestamps: true});
+    if (!fileEquals(filename)) {
+        console.log(`Added file ${filename}`);
+        fse.copySync(filename, path.join(target, filename.substr(source.length)), {preserveTimestamps: true});
+    }
 });
 
 watcher.on("unlink", (filename, stats) => {
