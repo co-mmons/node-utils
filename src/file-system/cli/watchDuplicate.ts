@@ -28,7 +28,7 @@ function fileEquals(input: string) {
 
     const inputBuffer = fse.readFileSync(input);
     const destPath = path.join(target, input.substring(source.length));
-    const destBuffer = fse.statSync(destPath).isFile() && fse.readFileSync(destPath);
+    const destBuffer = fse.existsSync(destPath) && fse.readFileSync(destPath);
 
     return destBuffer && inputBuffer.equals(destBuffer);
 }

@@ -21,7 +21,7 @@ console.log("Started watch-duplicate of ".concat(source, ", duplicated to ").con
 function fileEquals(input) {
     var inputBuffer = fse.readFileSync(input);
     var destPath = path.join(target, input.substring(source.length));
-    var destBuffer = fse.statSync(destPath).isFile() && fse.readFileSync(destPath);
+    var destBuffer = fse.existsSync(destPath) && fse.readFileSync(destPath);
     return destBuffer && inputBuffer.equals(destBuffer);
 }
 watcher.on("change", function (filename, stats) {
