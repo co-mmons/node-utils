@@ -24,9 +24,8 @@ const watcher = watch.watch(source, {ignored: ".DS_Store"});
 
 console.log(`Started watch-duplicate of ${source}, duplicated to ${target}`)
 
-function fileEquals(input: string) {
+function fileEquals(input: string, inputBuffer: Buffer) {
 
-    const inputBuffer = fse.readFileSync(input);
     const destPath = path.join(target, input.substring(source.length));
     const destBuffer = fse.existsSync(destPath) && fse.readFileSync(destPath);
 
@@ -34,14 +33,18 @@ function fileEquals(input: string) {
 }
 
 watcher.on("change", (filename, stats) => {
-    if (!fileEquals(filename)) {
+    const inputBuffer = fse.readFileSync(filename);
+    if (!fileEquals(filename, inputBuffer)) {
         console.log(`Changed file ${filename}`);
-        fse.copySync(filename, path.join(target, filename.substring(source.length)), {preserveTimestamps: true});
+        const destPath = path.join(target, filename.substring(source.length));
+        fse.writeFileSync(destPath, inputBuffer);
+        // fse.copySync(filename, path.join(target, filename.substring(source.length)), {preserveTimestamps: true});
     }
 });
 
 watcher.on("add", (filename, stats) => {
-    if (!fileEquals(filename)) {
+    const inputBuffer = fse.readFileSync(filename);
+    if (!fileEquals(filename, inputBuffer)) {
         console.log(`Added file ${filename}`);
         fse.copySync(filename, path.join(target, filename.substr(source.length)), {preserveTimestamps: true});
     }
