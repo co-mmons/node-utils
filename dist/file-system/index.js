@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.globRename = exports.globDelete = exports.globCopy = exports.dirExists = exports.createDirs = exports.createDirIfNotExists = exports.copyDirRecursiveSync = exports.copyFileSync = exports.clearDir = void 0;
+exports.watchDuplicate = exports.globRename = exports.globDelete = exports.globCopy = exports.dirExists = exports.createDirs = exports.createDirIfNotExists = exports.copyDirRecursiveSync = exports.copyFileSync = exports.clearDir = void 0;
 var clearDir_1 = require("./clearDir");
 Object.defineProperty(exports, "clearDir", { enumerable: true, get: function () { return clearDir_1.clearDir; } });
 var copyFileSync_1 = require("./copyFileSync");
@@ -19,3 +19,5 @@ var globDelete_1 = require("./globDelete");
 Object.defineProperty(exports, "globDelete", { enumerable: true, get: function () { return globDelete_1.globDelete; } });
 var globRename_1 = require("./globRename");
 Object.defineProperty(exports, "globRename", { enumerable: true, get: function () { return globRename_1.globRename; } });
+var watchDuplicate_1 = require("./watchDuplicate");
+Object.defineProperty(exports, "watchDuplicate", { enumerable: true, get: function () { return watchDuplicate_1.watchDuplicate; } });

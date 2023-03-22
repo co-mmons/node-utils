@@ -7,3 +7,4 @@ export {dirExists} from "./dirExists";
 export {globCopy} from "./globCopy";
 export {globDelete} from "./globDelete";
 export {globRename} from "./globRename";
+export {watchDuplicate} from "./watchDuplicate";
