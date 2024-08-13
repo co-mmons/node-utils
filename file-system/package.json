@@ -2,5 +2,6 @@
   "name": "@co.mmons/node-utils/file-system",
   "main": "../dist/file-system/index.js",
   "types": "../dist/file-system/index.d.ts",
+  "type": "commonjs",
   "sideEffects": false
 }
